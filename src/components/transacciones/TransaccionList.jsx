@@ -36,7 +36,7 @@ const TransaccionList = () => {
                 transacciones.map(transaccion => (
                     <TransaccionCard 
                         key={transaccion.idTransaccion}
-                        idTransaccion={transaccion.idTransaccion}
+                        transaccion={transaccion}
                     />
                 ))
             )}

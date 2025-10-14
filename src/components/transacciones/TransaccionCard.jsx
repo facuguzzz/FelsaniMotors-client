@@ -3,23 +3,12 @@ import TransaccionEstadoBadge from "./TransaccionEstadoBadge";
 import { AuthContext } from '../../context/AuthContext';
 import authService from '../../services/authService';
 
-const TransaccionCard = ({idTransaccion}) => {
+const TransaccionCard = ({transaccion}) => {
 
     const { user } = useContext(AuthContext);
 
     const [image, setImage] = useState("https://via.placeholder.com/300x200?text=Loading...");
-    const [transaccion, setTransaccion] = useState({
-        idTransaccion: "",
-        idPublicacion: "",
-        idComprador: "",
-        idVendedor: "",
-        monto: "",
-        metodoPago: "",
-        referenciaPago: "",
-        comentarios: "",
-        fechaTransaccion: "",
-        estado: ""
-    });
+    
     const [publicacion, setPublicacion] = useState({
         titulo: "",
         descripcion: "",
@@ -45,32 +34,13 @@ const TransaccionCard = ({idTransaccion}) => {
         rol: ""
     });
 
-    const URLTransaccion = `http://localhost:4002/api/transacciones/${idTransaccion}`;
     const URLPublicacion = `http://localhost:4002/api/publicaciones/${transaccion.idPublicacion}`;
     const URLPublicacionFoto = `http://localhost:4002/api/publicaciones/${transaccion.idPublicacion}/fotos-contenido`;
     const URLComprador = `http://localhost:4002/api/usuarios/${transaccion.idComprador}`;
     const URLVendedor = `http://localhost:4002/api/usuarios/${transaccion.idVendedor}`;
 
     useEffect(() => {
-        const token = authService.getToken();
-        const headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-        headers.append('Authorization', `Bearer ${token}`);
-
-        fetch(URLTransaccion, {
-            method: "GET",
-            headers: headers
-        })
-        .then((response) => {
-            if(!response.ok) throw new Error("No se encontró la transacción");
-            return response.json();
-        })
-        .then((data) => setTransaccion(data))
-        .catch((error) => console.error('Error buscando la transacción: ', error));
-    }, []);
-
-    useEffect(() => {
-        if (!transaccion.idPublicacion || !transaccion.idComprador || !transaccion.idVendedor) {
+        if (!transaccion) {
             return; 
         }
 
