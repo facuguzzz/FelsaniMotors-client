@@ -14,10 +14,15 @@ import UsuarioActualizacion from './components/usuario/UsuarioActualizacion'
 import CambioContraseña from './components/usuario/CambioContraseña'
 import UsuarioPublicaciones from './components/usuario/UsuarioPublicaciones'
 import UsuarioTransacciones from './components/usuario/UsuarioTransacciones'
+import PublicacionEditar from './components/publicaciones/PublicacionEditar'
 
 function App() {
   return (
     <>
+
+
+
+
       <Navbar />
       <main className="min-h-screen pb-16">
         <Routes>
@@ -25,6 +30,7 @@ function App() {
           <Route path="/publicaciones" element={<PublicacionList />} />
           <Route path="/publicacion/:id" element={<Publicacion />} />
           <Route path="/crear-publicacion" element={<PublicacionForm />} />
+          <Route path="/editar-publicacion/:id" element={<PublicacionEditar />} />
           <Route 
             path="/comprar/:id" 
             element={

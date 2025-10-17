@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import ComentarioList from "../comentarios/ComentarioList";
 import carritoService from "../../services/carritoService";
+import EditarPublicacion from "./PublicacionEditar";
 
 const Publicacion = () => {
     const { id } = useParams();
@@ -16,6 +17,8 @@ const Publicacion = () => {
     const [mostrarModal, setMostrarModal] = useState(false);
     const [error, setError] = useState(null);
     const [isInCart, setIsInCart] = useState(false);
+    const [editarVisible, setEditarVisible] = useState(false)
+    
 
     const formatearEstado = (estado) => {
         const estadosMap = {
@@ -135,6 +138,11 @@ const Publicacion = () => {
                 console.error("❌ Error:", err);
                 setError(err.message);
             });
+
+            if(isAuthenticated) {
+                if(user.idUsuario === publicacion.idUsuario) setEditarVisible(true)
+            } 
+            
     }, [idPublicacion]);
 
     // Verificar si el item está en el carrito
@@ -353,6 +361,27 @@ const Publicacion = () => {
                                         </svg>
                                         Comprar Ahora
                                     </button>
+
+                                    {/* Botón Editar Publicacion */}
+                                    { editarVisible &&
+                                        <button 
+                                            onClick={() => {
+                                                if (!isAuthenticated) {
+                                                    alert("Debes iniciar sesión para editar");
+                                                    return;
+                                                }
+                                                navigate(`/editar-publicacion/${idPublicacion}`);
+                                            }}
+                                            className="w-full bg-gray-700 hover:bg-gray-800 text-white font-bold py-3 px-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transform hover:scale-105 cursor-pointer text-sm"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-5">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 18.07a4.5 4.5 0 0 1-1.897 1.13L6 20.5l1.09-3.413a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14.25H6a2.25 2.25 0 0 0-2.25 2.25v2.25a2.25 2.25 0 0 0 2.25 2.25h12a2.25 2.25 0 0 0 2.25-2.25v-2.25a2.25 2.25 0 0 0-2.25-2.25Z" />
+                                            </svg>
+                                            Editar Publicación
+                                        </button>
+                                     }
+
+                                    
                                 </>
                             )}
                         </div>
